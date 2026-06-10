@@ -589,7 +589,11 @@ function onSq(r,c){
     const valid=vmoves.some(m=>m[0]===r&&m[1]===c);
     if(valid){
       const p=board[sel[0]][sel[1]];
-      const correct=(p==='wP'&&sel[0]===6&&sel[1]===5&&r===4&&c===5);
+      // accept both f4 (white pawn from f3) and Rxe7 (white rook from c7 to e7) as correct
+      const isF4 = (p==='wP'&&sel[0]===6&&sel[1]===5&&r===4&&c===5);
+      const isRxe7 = (p==='wR'&&sel[0]===1&&sel[1]===2&&r===1&&c===4);
+      const correct = isF4 || isRxe7;
+
       board[r][c]=p;board[sel[0]][sel[1]]=null;sel=null;vmoves=[];
       playMove();renderBoard();chessOver=true;
       if(correct){setTimeout(()=>{playCorrect();showPage('page3');initWordSearch();},400);}
